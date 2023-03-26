@@ -30,6 +30,8 @@ extension LyricsProviders.Syair: _LyricsProvider {
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<String, Never> {
         var parameter: [String: Any] = ["page": 1]
         switch request.searchTerm {
+        case let .id(id):
+            parameter["q"] = id
         case let .info(title: title, artist: artist):
             parameter["artist"] = artist
             parameter["title"] = title

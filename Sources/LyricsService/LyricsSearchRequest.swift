@@ -17,6 +17,7 @@ public struct LyricsSearchRequest: Equatable {
     public var userInfo: [String: String]
     
     public enum SearchTerm: Equatable {
+        case id(String)
         case keyword(String)
         case info(title: String, artist: String)
     }
@@ -33,6 +34,8 @@ extension LyricsSearchRequest.SearchTerm: CustomStringConvertible {
     
     public var description: String {
         switch self {
+        case let .id(id):
+            return id
         case let .keyword(keyword):
             return keyword
         case let .info(title: title, artist: artist):

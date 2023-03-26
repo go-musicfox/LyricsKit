@@ -35,6 +35,14 @@ extension LyricsProviders.NetEase: _LyricsProvider {
     public static let service: LyricsProviders.Service? = .netease
     
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
+        
+        if case LyricsSearchRequest.SearchTerm.id = request.searchTerm {
+            if let songId = Int(request.searchTerm.description) {
+                let song = LyricsToken.init(value: NetEaseResponseSearchResult.Result.Song.init(name: "", id: songId, duration: Int(request.duration), artists: [], album: NetEaseResponseModelAlbum(name: "", id: 0, picUrl: nil)))
+                return Just(song).eraseToAnyPublisher()
+            }
+        }
+        
         let parameter: [String: Any] = [
             "s": request.searchTerm.description,
             "offset": 0,

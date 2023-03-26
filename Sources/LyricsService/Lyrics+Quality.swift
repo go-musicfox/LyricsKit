@@ -43,6 +43,8 @@ extension Lyrics {
             return false
         }
         switch metadata.request?.searchTerm {
+        case .id?:
+            return true
         case let .info(searchTitle, searchArtist)?:
             return title.isCaseInsensitiveSimilar(to: searchTitle)
                 && artist.isCaseInsensitiveSimilar(to: searchArtist)
@@ -57,6 +59,8 @@ extension Lyrics {
     private var artistQuality: Double {
         guard let artist = idTags[.artist] else { return noArtistFactor }
         switch metadata.request?.searchTerm {
+        case .id?:
+            return Double.greatestFiniteMagnitude
         case let .info(_, searchArtist)?:
             if artist == searchArtist { return matchedArtistFactor }
             return similarity(s1: artist, s2: searchArtist)
@@ -71,6 +75,8 @@ extension Lyrics {
     private var titleQuality: Double {
         guard let title = idTags[.title] else { return noTitleFactor }
         switch metadata.request?.searchTerm {
+        case .id?:
+            return Double.greatestFiniteMagnitude
         case let .info(searchTitle, _)?:
             if title == searchTitle { return matchedTitleFactor }
             return similarity(s1: title, s2: searchTitle)
